@@ -11,7 +11,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
       capture_pageview: true,
       capture_pageleave: true,
       autocapture: true, // clicks, inputs, forms
-      session_recording: { enabled: false },
+      disable_session_recording: true,
     });
   }, []);
 
