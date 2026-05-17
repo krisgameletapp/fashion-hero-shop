@@ -1,18 +1,21 @@
 "use client";
 
-import posthog from "posthog-js";
-import { PostHogProvider as PHProvider } from "posthog-js/react";
-
-if (typeof window !== "undefined") {
-  posthog.init("phc_AR4Qu7buS3g26ZMhhB6SGDdsNhNeVCSuz6ozv3sFrMat", {
-    api_host: "https://eu.i.posthog.com",
-    capture_pageview: true,
-    capture_pageleave: true,
-    autocapture: true,
-    disable_session_recording: true,
-  });
-}
+import { useEffect } from "react";
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
-  return <PHProvider client={posthog}>{children}</PHProvider>;
+  useEffect(() => {
+    import("posthog-js").then(({ default: posthog }) => {
+      if (!posthog.__loaded) {
+        posthog.init("phc_AR4Qu7buS3g26ZMhhB6SGDdsNhNeVCSuz6ozv3sFrMat", {
+          api_host: "https://eu.i.posthog.com",
+          capture_pageview: true,
+          capture_pageleave: true,
+          autocapture: true,
+          disable_session_recording: true,
+        });
+      }
+    });
+  }, []);
+
+  return <>{children}</>;
 }
